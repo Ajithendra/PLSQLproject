@@ -193,12 +193,16 @@ student_rec student%rowtype;
 clg_rec clgrecord%rowtype;
 marks_rec marks%rowtype;
 result_rec results%rowtype;
+
+/* =================== CREATING A CURSOR  =================================== */
 cursor cur_first is
 select * from clgrecord where branch=sbranch and reg_no=sreg_no;
 begin
+/* =================== OPENING THE CURSOR =================================== */
 open cur_first;
 dbms_output.put_line('***********DETAILS OF STUDENTS FROM BRANCH '||sbranch||'************');
 loop
+/* =================== FETCHING DATA FROM CURSOR =================================== */
 fetch cur_first into clg_rec;
 if cur_first%rowcount=0 
 then
@@ -222,8 +226,10 @@ dbms_output.put_line('class:'||result_rec.result);
 dbms_output.put_line(' ');
 end if;
 end loop;
+/* =================== CLOSING CURSOR =================================== */
 close cur_first;
 end;
+
 
 /* =================== EXECUTING PROCEDURE =================================== */
 begin
