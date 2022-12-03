@@ -1,14 +1,46 @@
+/* ======================================================= TABLES ===========================================================*/
+  create table student(
+      rollno varchar2(10) primary key NOT NULL, 
+      name varchar2(30) NOT NULL,
+      age number(2) NOT NULL,
+      father varchar(15) NOT NULL,
+      sex char(6) NOT NULL
+  );
 
-create table student(rollno varchar2(10) primary key, name varchar2(30),age number(2),father varchar(15),sex char(6));
+  create table clgrecord(
+      rollno varchar2(10) NOT NULL,
+      reg_no number(5) NOT NULL,
+      name varchar(30) NOT NULL,
+      branch char(6) NOT NULL, 
+      year number(1) NOT NULL,
+      semester number(1) NOT NULL
+  );
 
-create table clgrecord(rollno varchar2(10),reg_no number(5),name varchar(30),branch char(6) not null, year number(1),semester number(1));
+  create table marks(
+      reg_no number(5) NOT NULL,
+      subj1 number(3) NOT NULL,
+      subj2 number(3) NOT NULL,
+      subj3 number(3) NOT NULL,
+      subj4 number(3) NOT NULL,
+      subj5 number(3) NOT NULL,
+      subj6 number(3) NOT NULL
+  );
 
-create table marks(reg_no number(5),subj1 number(3),subj2 number(3),subj3 number(3),subj4 number(3),subj5 number(3),subj6 number(3));
+create table results(
+      reg_no number(5) NOT NULL,
+      percentage number(6,2) NOT NULL,
+      result varchar(10) NOT NULL,
+      arrears number(1) NOT NULL
+  );
 
-create table results(reg_no number(5), percentage number(6,2),result varchar(10),arrears number(1));
+/*====================================================== END TABLES =========================================================*/
 
+/*======================================== DESCRIBE STUDENT TABLE ATTRIBUTES ================================================*/
 
 desc student;
+
+/*====================================================== POPULATING TABLE ===================================================*/
+
 insert into student values('19KN1A0501','BASHA',20,'ALTHAF','MALE');
 insert into student values('19KN1A0502','ARUN',19,'ANJI','MALE');
 insert into student values('20KN1A0501','BANU',19,'MURALI','FEMALE');
@@ -27,13 +59,11 @@ insert into student values('21KN1A0301','SUMAN',18,'SHANKAR','MALE');
 insert into student values('20KN1A0301','SUSHANTH',19,'SASI','MALE');
 insert into student values('22KN1A0301','SUMAN',19,'SURESH','MALE');
 
-
 insert into student values('19KN1A0201','BANU',20,'SURESH','FEMALE');
 insert into student values('19KN1A0202','BANU SRI',21,'SRIDHAR','FEMALE');
 insert into student values('21KN1A0201','KRISHNA',19,'SRINU','MALE');
 insert into student values('20KN1A0201','KUMAR',18,'SAM','MALE');
 insert into student values('22KN1A0201','KUSUMA',18,'SAMAR','FEMALE');
-
 
 insert into student values('19KN1A0101','ANKITH',20,'SHIVA','MALE');
 insert into student values('19KN1A0102','BUVAN',20,'SUKESH','MALE');
@@ -41,12 +71,12 @@ insert into student values('20KN1A0101','HARI',20,'KRISHNA','MALE');
 insert into student values('21KN1A0101','NAVENDRA',20,'HEMANTH','MALE');
 insert into student values('22KN1A0101','NAVEEN',18,'NANI','MALE');
 
-
-
 SELECT * FROM STUDENT;
 
+/*============================================ DESCRIBE CLGRECORD TABLE ATTRIBUTES ================================================*/
 
 desc clgrecord;
+
 insert into  clgrecord values('19KN1A0501',6001,'BASHA','CSE',4,2);
 insert into  clgrecord values('19KN1A0502',6075,'ARUN','CSE',4,2);
 insert into  clgrecord values('20KN1A0501',7075,'BANU','CSE',3,2);
@@ -80,8 +110,10 @@ insert into clgrecord values('22KN1A0101',9172,'NAVEEN','MECH',1,2);
 
 SELECT * FROM clgrecord;
 
+/*============================================ DESCRIBE MARKS TABLE ATTRIBUTES ================================================*/
 
 desc marks;
+
 insert into marks values(6001,95,97,95,94,93,90);
 insert into marks values(6075,95,84,95,94,93,98);
 insert into marks values(7075,99,94,88,94,93,91);
@@ -93,7 +125,6 @@ insert into marks values(6112,94,86,96,88,87,91);
 insert into marks values(8102,99,90,92,88,86,80);
 insert into marks values(7232,75,92,94,45,94,88);
 insert into marks values(9232,75,92,94,45,94,88);
-
 
 insert into marks values(6222,85,91,96,44,84,86);
 insert into marks values(6722,95,94,97,45,84,89);
@@ -107,19 +138,18 @@ insert into marks values(8082,97,94,94,80,77,62);
 insert into marks values(7072,97,94,94,80,77,62);
 insert into marks values(9072,97,94,94,80,77,62);
 
-
 insert into marks values(6082,97,94,94,80,76,77);
 insert into marks values(6092,45,46,96,70,75,62);
 insert into marks values(7002,97,94,94,80,77,82);
 insert into marks values(8072,97,94,94,80,88,42);
 insert into marks values(9172,97,94,94,80,88,42);
 
-
 SELECT * FROM MARKS;
 
-
+/*============================================ DESCRIBE RESULTS TABLE ATTRIBUTES ================================================*/
 
 desc results;
+
 insert into results values(6001,94,'PASS',0);
 insert into results values(6075,93.16,'PASS',0);
 insert into results values(7075,93.16,'PASS',0);
@@ -153,7 +183,9 @@ insert into results values(9172,82.5,'PASS',0);
 
 SELECT * FROM RESULTS;
 
+/*======================================================END POPULATING TABLE ===================================================*/
 
+/* =================== START PROCEDURE  =================================== */
 
 create or replace procedure pro_smarks(sbranch  char,sreg_no number)
 as
@@ -161,11 +193,9 @@ student_rec student%rowtype;
 clg_rec clgrecord%rowtype;
 marks_rec marks%rowtype;
 result_rec results%rowtype;
-
 cursor cur_first is
 select * from clgrecord where branch=sbranch and reg_no=sreg_no;
 begin
-
 open cur_first;
 dbms_output.put_line('***********DETAILS OF STUDENTS FROM BRANCH '||sbranch||'************');
 loop
@@ -195,8 +225,7 @@ end loop;
 close cur_first;
 end;
 
-
-
+/* =================== EXECUTING PROCEDURE =================================== */
 begin
 pro_smarks('CSE',6001);
 END;
